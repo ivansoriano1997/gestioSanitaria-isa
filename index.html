@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon"> 
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <title id="titApp">Aplicació gestió Sanitària</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-<!-- PER MODAL 
+<!-- PER MODAL
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -19,18 +19,17 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    
+
     <script src="./js/classes/Persona.js"></script>
     <script src="./js/classes/Hospital.js"></script>
     <script src="./js/classes/Metge.js"></script>
     <script src="./js/classes/Pacient.js"></script>
-   
   </head>
   <body>
     <!-- INICI container -->
     <div class="container">
       <h1  class="text-center mt-3 mb-3" >Aplicació gestió Sanitària</h1>
-      <!-- ==================================================================================== -->  
+      <!-- ==================================================================================== -->
       <!-- INICI Missatge Modal -->
       <div class="modal fade" id="divEspaiModal">
         <!-- https://getbootstrap.com/docs/4.0/components/modal/ -->
@@ -56,18 +55,18 @@
         </div>
       </div>
       <!-- FINAL MissatgeModal -->
-      <!-- ==================================================================================== -->  
+      <!-- ==================================================================================== -->
       <!-- INICI barra de missatges -->
       <div class="text-center mt-5 alert alert-danger alert-dismissibled d-none" id="divBarraMissatges">
         <a href="#" class="close" data-dismiss="alert" aria-label="close"><h3>&times;</h3></a>
         <h3 id="h3BarraMissatges"></h3>
       </div>
       <!-- FINAL barra de missatges -->
-      <!-- ==================================================================================== -->  
+      <!-- ==================================================================================== -->
       <!-- ------------------------------------------------------------------------------------ -->
       <!-- INICI FILA APP -->
       <div class="row">
-        <!-- INICI COLUMNA 1 >md 02 < -- > bloc control equerre --> 
+        <!-- INICI COLUMNA 1 >md 02 < -- > bloc control equerre -->
         <div class="col-md-2" id="divPanellGestio">
               <!-- INICI eleID_h4TitolPanell -->
               <h4 class="text-center" id="h4TitolPanell">Panell de Gestió</h4> <!-- mt margin top = 5 -->
@@ -81,7 +80,7 @@
             <!-- <button type="button" class="btn btn-primary  btn-block" data-toggle="modal" data-target="#espaiModal">Open modal</button> -->
         </div>
         <!-- FINAL COLUMNA 1 >md 02 < -- > bloc control equerre -->
-        <!-- ==================================================================================== -->  
+        <!-- ==================================================================================== -->
         <!-- INICI COLUMNA 2 >md 10 < -- >  modul escriptori -->
         <div class="col-md-10" id="divPanellEscriptori"> <!-- col-md-8  divPanellEscriptori -->
           <!-- ------------------------------------------------------------------------------------ -->
@@ -103,7 +102,7 @@
             <!-- INICI formIntroHospital -->
             <div class="form-row" id="formIntroHospital">
               <!-- INICI formIntroHospital_Nom -->
-              <div class="col mb-6" id="formIntroHospital_Nom">
+              <div class="col mb-3" id="formIntroHospital_Nom">
                 <label for="nomHospital" class="font-weight-bold" > Nom: </label>
                 <input type="text" id="inputNomHospital" name="Nom"  title="Introdueix el nom de l'Hospital."
                        class="form-control" required minlength="1" maxlength="100"
@@ -111,10 +110,17 @@
               </div>
               <!-- FINAL formIntroHospital_Nom -->
               <!-- INICI formIntroHospital_Llits -->
-              <div class="col mb-6" id="formIntroHospital_Llits">
+              <div class="col mb-3" id="formIntroHospital_Llits">
                 <label for="maximPacients" class="font-weight-bold">Màxim de pacients que pot ingressar: </label>
                 <input type="number" id="maximPacientsHospital" name="maxPacHospital"
                 title="Introdueix el nombre màxim de pacients que té l'Hospital."
+                class="form-control" required min="0" max="100"
+                onblur="comprovaCampNumero(this)" value="2" />
+              </div>
+              <div class="col mb-3" id="formIntroHospital_Metges">
+                <label for="maximPacients" class="font-weight-bold">Màxim de metges que pot tenir: </label>
+                <input type="number" id="maximMetgesHospital" name="maxPacHospital"
+                title="Introdueix el nombre màxim de metges que l'hospital pot tenir."
                 class="form-control" required min="0" max="100"
                 onblur="comprovaCampNumero(this)" value="2" />
               </div>
@@ -136,7 +142,7 @@
              <!-- w-100  = width: 100% -->
             <h2 class="text-center">Pacients</h2>
             <p class="text-center">Introdueix les dades del pacients que vols ingressar:</p>
-            <div id="dadesPacient"></div>
+            <div id="dadesPacient" class="form-row"></div>
             <div class="text-center">
               <button type="button" class="btn btn-primary mt-4" onClick="ingressarPacients()">Ingressar</button>
               <button type="button" class="btn btn-primary mt-4" onClick="ocultaGestioPacients(this)">Torna</button>
@@ -172,7 +178,7 @@
           </div>
           <!-- FINAL divControls -->
         <!-- ------------------------------------------------------------------------------------ -->
-        <!-- ==================================================================================== -->   
+        <!-- ==================================================================================== -->
         </div>
         <!-- INICI COLUMNA 2 >md 10 < -- >  modul divPanellEscriptori -->
         <!-- FINAL modul escriptori -->
@@ -180,6 +186,7 @@
       <!-- FINAL FILA APP -->
     </div>
     <!-- FINAL container -->
+
     <script src="./js/dadesMalalties.js" id="dadesMalaltiesJs"></script>
     <script src="./js/comprovacions.js" id="comprovacionsJs"></script>
     <script src="./js/main.js"></script>
