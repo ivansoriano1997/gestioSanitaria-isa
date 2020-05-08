@@ -48,24 +48,29 @@ taula_missatges[0][intTitol] = "No habilitat";
 taula_missatges[0][intMissatge] = "Ho sento, encara no està habilitat!";
 
 taula_missatges[1] = [];
-taula_missatges[1][intTitol] = "El camp màxim pacients és obligatori!";
-taula_missatges[1][intMissatge] = "Cal que entris un nombre al camp màxim pacients!";
+taula_missatges[1][intTitol] = "El camp {0} és obligatori!";
+taula_missatges[1][intMissatge] = "Cal que entris un valor al camp {0}!";
 
 taula_missatges[2] = [];
-taula_missatges[2][intTitol] = "El camp Nom Hospital és obligatori!";
-taula_missatges[2][intMissatge] = "Cal que entris un nom al camp Hospital!";
+taula_missatges[2][intTitol] = "El camp {0} no conté un nombre vàlid!";
+taula_missatges[2][intMissatge] = "Cal que entris un nombre vàlid al camp {0}!";
 
 //    let metge = new Metge('Ivan', 'Soriano', '12345678A', 'Oncologia');
 //     alert(JSON.stringify(metge));
 
 function comprovaCampBuit(objecteRebut) {
+    let buit = false;
+
     if (objecteRebut.value == "") {
-        mostraMissatge(2);
+        mostraMissatge(1, objecteRebut.id);
+        buit = true;
     }
+
+    return buit;
 }
 
 function comprovaCampNumero(objecteRebut) {
-    switch (isNaN(objecteRebut.value) ? 1 : objecteRebut.value == "" ? 2 : 0) {
+    switch (isNaN(objecteRebut.value) ? 2 : parseInt(objecteRebut.value) === 0 ? 1 : 0) {
         case 1:
             mostraMissatge(1);
             break;
@@ -83,10 +88,10 @@ function comprovaCampNumero(objecteRebut) {
 }
 
 
-function mostraMissatge(codiMissatge) {
+function mostraMissatge(codiMissatge, nomCamp) {
     /* Amb format JQuery   */
-    $('#divEspaiModal').find('#titolModal').text(taula_missatges[codiMissatge][intTitol]);
-    $('#divEspaiModal').find('#missatgeModal').text(taula_missatges[codiMissatge][intMissatge]);
+    $('#divEspaiModal').find('#titolModal').text(String.format(taula_missatges[codiMissatge][intTitol], nomCamp));
+    $('#divEspaiModal').find('#missatgeModal').text(String.format(taula_missatges[codiMissatge][intMissatge], nomCamp));
     $('#divEspaiModal').modal('show');
 }
 
@@ -212,93 +217,148 @@ function ocultaGestioHospital(objecteRebut) {
     mostraBotons();
 }
 
-// CREA L'INPUT DEL NOM DEL PACIENT.
-function crearInputNomPacient(numeroPacient) {
-  let inputNomPacient = document.createElement("input")
-  inputNomPacient.setAttribute("type", "text");
-  inputNomPacient.setAttribute("name", "inputNomPacient" + numeroPacient.toString());
-  inputNomPacient.classList.add("form-control");
+// // CREA L'INPUT DEL NOM DEL PACIENT.
+// function crearInputNomPacient(numeroPacient) {
+//   let inputNomPacient = document.createElement("input")
+//   inputNomPacient.setAttribute("type", "text");
+//   inputNomPacient.setAttribute("name", "inputNomPacient" + numeroPacient.toString());
+//   inputNomPacient.classList.add("form-control");
+//
+//   return inputNomPacient;
+// }
 
-  return inputNomPacient;
+// CREA UN CONTENIDOR ESPECIFICANT UNA CLASSE O MÉS CLASSES
+function crearContenidor(id, classes) {
+    let contenidor = null;
+
+    if (Array.isArray(classes)) {
+        if (typeof id !== "undefined") {
+            contenidor = document.createElement("div");
+            contenidor.setAttribute("id", id.toString());
+
+            if (classes.length > 0) {
+                classes.forEach((classe) => {
+                    contenidor.classList.add(classe.toString());
+                });
+            }
+        }
+    } else {
+      console.log("ERROR => crearContenidor(classes): el paràmetre <<classe>> ha de ser un array de cadenes!");
+    }
+
+    return contenidor;
 }
 
-// CREA L'OPTION DEL SELECT DE MALALTIES
-function crearOptionSelectMalalties(numeroMalaltia) {
-  let optionMalaltia = document.createElement("option");
-  optionMalaltia.value = "malaltia" + numeroMalaltia.toString();
-  optionMalaltia.text = numeroMalaltia >= 0 ? llistaMalalties[numeroMalaltia] : "Cap malaltia";
+// CREA UN LABEL DE FORMA DINÀMICA ESPECIFICANT UN TEXT I A QUIN INPUT VA DIRIGIDA
+function crearLabel(inputFor, text) {
+    let label = null
 
-  if (numeroMalaltia < 0)
-    optionMalaltia.title = "Utilizar per quan sigui una revisió o quan es tracti d'una malaltia desconeguda.";
+    if (typeof inputFor !== "undefined" && typeof text !== "undefined") {
+      label = document.createElement("label");
+      label.setAttribute("for", inputFor.toString());
+      label.classList.add("font-weight-bold");
+      label.innerHTML = text;
+    } else {
+      console.log("ERROR => crearLabel(for, text): els paràmetre <<inputFor, text>> no poden estar sense definir!");
+    }
 
-  return optionMalaltia;
+    return label;
 }
 
-// CREA EL SELECT DE MALALTIES
-function crearSelectMalalties(numeroPacient) {
-  // Creem el desplegable de materies
-  let selectMalalties = document.createElement("select");
-  selectMalalties.id = "selectMalaltiaPacient" + numeroPacient.toString();
-  selectMalalties.classList.add("form-control");
+// CREAR UN INPUT DE FORMA DINÀMICA ESPECIFICANT UN ID
+function crearInput(id, attributsExtra) {
+    let input = null;
 
-  // Creem la opció de 'cap seleccionada'
-  selectMalalties.appendChild(crearOptionSelectMalalties(-1));
+    if (typeof id !== "undefined") {
+      input = document.createElement("input");
+      input.setAttribute("id", id.toString());
 
-  // Afegim les opcions al formulari
-  for (let numeroMalaltia = 0; numeroMalaltia < llistaMalalties.length; numeroMalaltia++) {
-    selectMalalties.appendChild(crearOptionSelectMalalties(numeroMalaltia));
-  }
+      if (Array.isArray(attributsExtra)) {
+          if (attributsExtra.length > 0) {
+              attributsExtra.forEach((attributsExtra) => {
+                if (typeof attributsExtra === "object" && attributsExtra !== null) {
+                  input.setAttribute(attributsExtra.nom.toString(), attributsExtra.valor.toString());
+                }
+              });
+          }
+      }
 
-  return selectMalalties;
+      input.classList.add("form-control");
+    } else {
+      console.log("ERROR => crearInput(id): el paràmetre <<id>> no pot estar sense definir!");
+    }
+
+    return input;
 }
 
 // CREA EL CONTINGUT DEl FORMULARI DE PACIENT
 function crearContingutDivPacient(numeroPacient) {
   let formulariPacient = null;
 
-  // Creem el contenidor "row" per al pacient
-  let divRowPacient = document.createElement("div");
-  divRowPacient.classList.add("row");
+  // Creem el div que contindrà tots els sub-contenidors de nom, cognom, nif, malaltia
+  let divPacient = crearContenidor("divPacient" + numeroPacient.toString(), ["form-row", "mb-3"]);
 
-  // Creem el contenidor "col" per al input del nom del pacient
-  let divColNomPacient = document.createElement("div");
-  divColNomPacient.classList.add("col");
-  divColNomPacient.classList.add("mb-3");
+  /* NOM */
+  // Creem un div "col" per al label i input del nom del pacient
+  let divColNomPacient = crearContenidor("colNomPacient" + numeroPacient.toString(), ["col"]);
 
   // Afegim la label del nom del pacient
-  let labelPacient = document.createElement("label");
-  labelPacient.innerText = "Introdueix el nom del pacient:";
-  labelPacient.setAttribute("for", "inputNomPacient" + numeroPacient.toString());
-  divColNomPacient.appendChild(labelPacient);
+  divColNomPacient.appendChild(crearLabel("inputNomPacient" + numeroPacient.toString(), "Nom del pacient: "));
 
   // Afegim l'input del nom del pacient
-  divColNomPacient.appendChild(crearInputNomPacient(numeroPacient));
+  divColNomPacient.appendChild(crearInput("inputNomPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 100}]));
 
-  // Afegim el contenidor "col" dins del contenidor "row"
-  divRowPacient.appendChild(divColNomPacient);
+  // Afegim el contenidor "col" al contenidor "pacient"
+  divPacient.appendChild(divColNomPacient);
 
-  // Creem el contenidor "col" per al input del nom del pacient
-  let divColMalaltiaPacient = document.createElement("div");
-  divColMalaltiaPacient.classList.add("col");
-  divColMalaltiaPacient.classList.add("mb-3");
+  /* COGNOM */
+  // Creem un div "col" per al label i input del cognom del pacient
+  let divCognomPacient = crearContenidor("colCognomPacient" + numeroPacient.toString(), ["col"]);
 
   // Afegim la label del nom del pacient
-  let labelMalaltia = document.createElement("label");
-  labelMalaltia.innerText = "Introdueix el nom del pacient:";
-  labelMalaltia.setAttribute("for", "inputNomPacient" + numeroPacient.toString());
-  divColMalaltiaPacient.appendChild(labelMalaltia);
+  divCognomPacient.appendChild(crearLabel("inputCognomPacient" + numeroPacient.toString(), "Cognom del pacient: "));
 
-  // Afegim el select de malalties
-  divColMalaltiaPacient.appendChild(crearSelectMalalties(numeroPacient));
+  // Afegim l'input del nom del pacient
+  divCognomPacient.appendChild(crearInput("inputCognomPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 100}]));
 
-  // Afegim el contenidor "col" dins del contenidor "row"
-  divRowPacient.appendChild(divColMalaltiaPacient);
+  // Afegim el contenidor "col" al contenidor "pacient"
+  divPacient.appendChild(divCognomPacient);
+
+  /* NIF */
+  // Creem un div "col" per al label i input del NIF del pacient
+  let divNifPacient = crearContenidor("colNifPacient" + numeroPacient.toString(), ["col"]);
+
+  // Afegim la label del nom del pacient
+  divNifPacient.appendChild(crearLabel("inputNifPacient" + numeroPacient.toString(), "NIF del pacient: "));
+
+  // Afegim l'input del nom del pacient
+  divNifPacient.appendChild(crearInput("inputNifPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 9}]));
+
+  // Afegim el contenidor "col" al contenidor "pacient"
+  divPacient.appendChild(divNifPacient);
+
+  /* MALALTIA */
+  // Creem un div "col" per al label i input de la malaltia del pacient
+  let divColMalaltiaPacient = crearContenidor("colMalaltiaPacient" + numeroPacient.toString(), ["col"]);
+
+  // Afegim la label de la malaltia del pacient
+  divColMalaltiaPacient.appendChild(crearLabel("inputMalaltiaPacient" + numeroPacient.toString(), "Malaltia del pacient: "));
+
+  // Afegim l'input de la malaltia
+  divColMalaltiaPacient.appendChild(crearInput("inputMalaltiaPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "max-length", valor: 100}]));
+
+  // Afegim el contenidor "col" al contenidor "pacient"
+  divPacient.appendChild(divColMalaltiaPacient);
 
   // Afegim el contenidor del pacient al formulari
-  document.getElementById("dadesPacient").appendChild(divRowPacient);
+  document.getElementById("dadesPacient").appendChild(divPacient);
 }
 
 function mostraGestioPacients(objecteRebut) {
+    if (typeof document.getElementById("divPacient0") !== "undefined" && document.getElementById("divPacient0") !== null) {
+        document.getElementById("dadesPacient").innerHTML = "";
+    }
+
     for (let pacient = 0; pacient < hospital.maximPacients; pacient++) {
       crearContingutDivPacient(pacient);
     }
@@ -323,17 +383,64 @@ function ocultaControls(objecteRebut) {
     mostraBotons();
 }
 
+// SETEJA LA VARIABLE AMB LA CLASSE HOSPITAL, QUÉ CONTÉ LES DADES DEL FORMULARI D'ALTA D'HOSPITAL
 function crearHospital() {
-    // Creem l'objecte Hospital amb les dades introduïdes formulari
-    hospital = new Hospital (
-      document.getElementById("inputNomHospital").value,
-      document.getElementById("maximPacientsHospital").value,
-      document.getElementById("maximMetgesHospital").value
-    );
+    if (!comprovaCampBuit(document.getElementById("inputNomHospital")) &&
+        !comprovaCampBuit(document.getElementById("maximPacientsHospital")) &&
+        !comprovaCampBuit(document.getElementById("maximMetgesHospital"))) {
+        // Creem l'objecte Hospital amb les dades introduïdes formulari
+        hospital = new Hospital (
+          document.getElementById("inputNomHospital").value,
+          document.getElementById("maximPacientsHospital").value,
+          document.getElementById("maximMetgesHospital").value
+        );
 
-    // Ocultem aquest formulari
-    ocultaGestioHospital();
+        // Ocultem aquest formulari
+        ocultaGestioHospital();
 
-    // Mostrem el formulari de gestió de pacients
-    mostraGestioPacients();
+        // Mostrem el formulari de gestió de pacients
+        mostraGestioPacients();
+    }
+}
+
+// SETEJA LA VARIABLE AMB LA CLASSE PACIENT, QUÉ CONTÉ LES DADES DEL FORMULARI D'ALTA DE PACIENTS
+function ingressarPacients() {
+  let campsBuits = false;
+  let numeroPacient = 0;
+
+  // Creem l'objecte Pacient amb les dades introduïdes formulari
+  while (numeroPacient < hospital.maximPacients && !campsBuits) {
+      if (!comprovaCampBuit(document.getElementById("inputNomPacient" + numeroPacient.toString())) &&
+          !comprovaCampBuit(document.getElementById("inputCognomPacient" + numeroPacient.toString())) &&
+          !comprovaCampBuit(document.getElementById("inputNifPacient" + numeroPacient.toString())) &&
+          !comprovaCampBuit(document.getElementById("inputMalaltiaPacient" + numeroPacient.toString()))) {
+
+          // Afegim l'objecte pacients a l'array de "pacientsIngressats" amb les dades introduïdes formulari
+          hospital.pacientsIngressats.push(new Pacient (
+            document.getElementById("inputNomPacient" + numeroPacient.toString()).value,
+            document.getElementById("inputCognomPacient" + numeroPacient.toString()).value,
+            document.getElementById("inputNifPacient" + numeroPacient.toString()).value,
+            document.getElementById("inputMalaltiaPacient" + numeroPacient.toString()).value
+          ));
+
+          console.log("Pacients ingressat: " + JSON.stringify(hospital.pacientsIngressats));
+          numeroPacient++;
+      } else {
+        campsBuits = true;
+      }
+  }
+
+  if (!campsBuits) {
+      ocultaGestioPacients();
+  }
+}
+
+String.format = function() {
+  let s = arguments[0];
+  for (let i = 0; i <= arguments.length; i++) {
+    let reg = new RegExp("\\{" + i + "\\}", "gm");
+    s = s.replace(reg, arguments[i + 1]);
+  }
+
+  return s;
 }
