@@ -256,18 +256,20 @@ function crearLabel(inputFor, text) {
 }
 
 // CREAR UN INPUT DE FORMA DINÀMICA ESPECIFICANT UN ID
-function crearInput(id, attributsExtra) {
+function crearInput(id, atributsExtra) {
     let input = null;
 
     if (typeof id !== "undefined") {
       input = document.createElement("input");
       input.setAttribute("id", id.toString());
 
-      if (Array.isArray(attributsExtra)) {
-          if (attributsExtra.length > 0) {
-              attributsExtra.forEach((attributsExtra) => {
-                if (typeof attributsExtra === "object" && attributsExtra !== null) {
-                  input.setAttribute(attributsExtra.nom.toString(), attributsExtra.valor.toString());
+      if (Array.isArray(atributsExtra)) {
+          if (atributsExtra.length > 0) {
+              atributsExtra.forEach((atributExtra) => {
+                if (typeof atributExtra === "object" && atributExtra !== null) {
+                  input.setAttribute(atributExtra.nom.toString(), atributExtra.valor.toString());
+                } else {
+                  console.log("ERROR => crearInput(id, atributsExtra): el paràmetre <<atributsExtra>> ha de contindre un array amb objectes vàlids!");
                 }
               });
           }
@@ -275,10 +277,57 @@ function crearInput(id, attributsExtra) {
 
       input.classList.add("form-control");
     } else {
-      console.log("ERROR => crearInput(id): el paràmetre <<id>> no pot estar sense definir!");
+      console.log("ERROR => crearInput(id, atributsExtra): el paràmetre <<id>> no pot estar sense definir!");
     }
 
     return input;
+}
+
+// CREA L'OPTION DEL SELECT
+function crearOptionSelect(valor, text) {
+    let option = null;
+
+    if (typeof valor !== "undefined" && typeof text !== "undefined") {
+        option = document.createElement("option");
+        option.value = valor;
+        option.text = text;
+    } else {
+      console.log("ERROR => crearOptionSelect(valor, text): els paràmetres han d'estar definits!");
+    }
+
+    return option;
+}
+
+// CREA UN SELECT
+function crearSelect(id, textsOptions) {
+  let select = null;
+
+  if (typeof id !== "undefined") {
+      select = document.createElement("select");
+      select.setAttribute("id", id.toString());
+      select.classList.add("form-control");
+
+      // Creem opció per defecte (--- Sense definir ---)
+      let optionPerDefecte = crearOptionSelect("option-1" + convertirAMajuscules(id.toString()), "--- Sense definir ---");
+      optionPerDefecte.setAttribute("selected", true);
+      optionPerDefecte.setAttribute("disabled", true);
+      select.appendChild(optionPerDefecte);
+
+      if (typeof Array.isArray(textsOptions)) {
+          for (let numeroTextOption = 0; numeroTextOption < textsOptions.length; numeroTextOption++) {
+              let option = crearOptionSelect("option" + numeroTextOption.toString() + convertirAMajuscules(id.toString()), textsOptions[numeroTextOption].toString());
+              if (option !== null) {
+                select.appendChild(option);
+              }
+          }
+      } else {
+        console.log("ERROR => crearSelect(id, textsOptions): el paràmetre <<valorsOptions>> ha de ser un array de cadenes!");
+      }
+    } else {
+      console.log("ERROR => crearSelect(id, valorsOptions): el paràmetre <<valorsOptions>> no pot estar sense definir!");
+    }
+
+  return select;
 }
 
 // CREA EL CONTINGUT DEl FORMULARI DE PACIENT
@@ -334,8 +383,8 @@ function crearContingutDivPacient(numeroPacient) {
   // Afegim la label de la malaltia del pacient
   divColMalaltiaPacient.appendChild(crearLabel("inputMalaltiaPacient" + numeroPacient.toString(), "Malaltia del pacient: "));
 
-  // Afegim l'input de la malaltia
-  divColMalaltiaPacient.appendChild(crearInput("inputMalaltiaPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "max-length", valor: 100}]));
+  // Afegim el select de malalties
+  divColMalaltiaPacient.appendChild(crearSelect("selectMalaltiaPacient" + numeroPacient.toString(), llistaMalalties));
 
   // Afegim el contenidor "col" al contenidor "pacient"
   divPacient.appendChild(divColMalaltiaPacient);
@@ -433,4 +482,9 @@ String.format = function() {
   }
 
   return s;
+}
+
+const convertirAMajuscules = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
