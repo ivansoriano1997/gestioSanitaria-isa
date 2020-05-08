@@ -217,16 +217,6 @@ function ocultaGestioHospital(objecteRebut) {
     mostraBotons();
 }
 
-// // CREA L'INPUT DEL NOM DEL PACIENT.
-// function crearInputNomPacient(numeroPacient) {
-//   let inputNomPacient = document.createElement("input")
-//   inputNomPacient.setAttribute("type", "text");
-//   inputNomPacient.setAttribute("name", "inputNomPacient" + numeroPacient.toString());
-//   inputNomPacient.classList.add("form-control");
-//
-//   return inputNomPacient;
-// }
-
 // CREA UN CONTENIDOR ESPECIFICANT UNA CLASSE O MÉS CLASSES
 function crearContenidor(id, classes) {
     let contenidor = null;
