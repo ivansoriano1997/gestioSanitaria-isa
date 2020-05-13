@@ -6,14 +6,14 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <title id="titApp">Aplicació gestió Sanitària</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-<!-- PER MODAL
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
- PER MODAL -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- PER MODAL
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+     PER MODAL -->
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -63,7 +63,34 @@
       </div>
       <!-- FINAL barra de missatges -->
       <!-- ==================================================================================== -->
-      <!-- ------------------------------------------------------------------------------------ -->
+      <!-- INICI barra d'accessibilitat -->
+      <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark" id="navBarraAccessibilitat">
+        <ul class="navbar-nav">
+          <li class="nav-item m-2">
+            <i class="fas fa-adjust fa-2x text-white" id="iconaContrastBlancNegre" onclick="contrastBlancNegre()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-adjust fa-2x text-warning" id="iconaContrastNegreGroc" onclick="contrastNegreGroc()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-adjust fa-2x text-success" id="iconaContrastNegreVerd" onclick="contrastNegreVerd()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-adjust fa-2x text-primary" id="iconaContrastEstandar" onclick="contrastEstandar()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-font fa-sm text-white align-bottom" onclick="fontPetita()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-font fa-lg text-white align-bottom" onclick="fontMitjana()"></i>
+          </li>
+          <li class="nav-item m-2">
+            <i class="fas fa-font fa-2x text-white align-bottom" onclick="fontGran()"></i>
+          </li>
+        </ul>
+      </nav>
+      <!-- FINAL barra d'accessibilitat  -->
+      <!-- ==================================================================================== -->
       <!-- INICI FILA APP -->
       <div class="row">
         <!-- INICI COLUMNA 1 >md 02 < -- > bloc control equerre -->
@@ -191,5 +218,6 @@
     <script src="./js/dadesMalalties.js" id="dadesMalaltiesJs"></script>
     <script src="./js/comprovacions.js" id="comprovacionsJs"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/accessibilitat.js"></script>
   </body>
 </html>
