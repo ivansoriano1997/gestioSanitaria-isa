@@ -102,20 +102,37 @@ function mostraBotons() {
     eleID_btnGestMetges.disabled = false;
     eleID_btnGestAplicacio.disabled = false;
 
-    $(eleID_btnGestHospitals).removeClass('btn-dark');
+    $(eleID_btnGestHospitals).removeClass('btn-secondary');
     $(eleID_btnGestHospitals).addClass('btn-primary');
 
-    $(eleID_btnGestPacients).removeClass('btn-dark');
-    $(eleID_btnGestPacients).addClass('btn-primary');
+    let botoClasse = "";
 
-    $(eleID_btnGestMalalties).removeClass('btn-dark');
-    $(eleID_btnGestMalalties).addClass('btn-primary');
+    switch($("nav#navBarraAccessibilitat i.text-muted").attr("id").toString()) {
+      case "iconaContrastBlancNegre":
+        botoClasse = "btn-dark";
+        break;
+      case "iconaContrastNegreGroc":
+        botoClasse = "btn-warning";
+        break;
+      case "iconaContrastNegreVerd":
+        botoClasse = "btn-succes";
+        break;
+      case "iconaContrastEstandar":
+        botoClasse = "btn-primary";
+        break;
+    }
 
-    $(eleID_btnGestMetges).removeClass('btn-dark');
-    $(eleID_btnGestMetges).addClass('btn-primary');
+    $(eleID_btnGestPacients).removeClass('btn-secondary');
+    $(eleID_btnGestPacients).addClass(botoClasse);
 
-    $(eleID_btnGestAplicacio).removeClass('btn-dark');
-    $(eleID_btnGestAplicacio).addClass('btn-primary');
+    $(eleID_btnGestMalalties).removeClass('btn-secondary');
+    $(eleID_btnGestMalalties).addClass(botoClasse);
+
+    $(eleID_btnGestMetges).removeClass('btn-secondary');
+    $(eleID_btnGestMetges).addClass(botoClasse);
+
+    $(eleID_btnGestAplicacio).removeClass('btn-secondary');
+    $(eleID_btnGestAplicacio).addClass(botoClasse);
 }
 
 function amagaBotons() {
@@ -126,19 +143,19 @@ function amagaBotons() {
     eleID_btnGestAplicacio.disabled = true;
 
     $(eleID_btnGestHospitals).removeClass('btn-primary');
-    $(eleID_btnGestHospitals).addClass('btn-dark');
+    $(eleID_btnGestHospitals).addClass('btn-secondary');
 
     $(eleID_btnGestPacients).removeClass('btn-primary');
-    $(eleID_btnGestPacients).addClass('btn-dark');
+    $(eleID_btnGestPacients).addClass('btn-secondary');
 
     $(eleID_btnGestMalalties).removeClass('btn-primary');
-    $(eleID_btnGestMalalties).addClass('btn-dark');
+    $(eleID_btnGestMalalties).addClass('btn-secondary');
 
     $(eleID_btnGestMetges).removeClass('btn-primary');
-    $(eleID_btnGestMetges).addClass('btn-dark');
+    $(eleID_btnGestMetges).addClass('btn-secondary');
 
     $(eleID_btnGestAplicacio).removeClass('btn-primary');
-    $(eleID_btnGestAplicacio).addClass('btn-dark');
+    $(eleID_btnGestAplicacio).addClass('btn-secondary');
 }
 
 
@@ -391,6 +408,19 @@ function crearContingutDivPacient(numeroPacient) {
 
   // Afegim el contenidor del pacient al formulari
   document.getElementById("dadesPacient").appendChild(divPacient);
+
+  // Augmentem la mida de la lletra (en cas que ens ho demananin)
+  switch(document.querySelector("i.fa-font.text-muted").id.toString()) {
+    case "iconaFontPetita":
+      fontPetita();
+      break;
+    case "iconaFontMitjana":
+      fontMitjana();
+      break;
+    case "iconaFontGran":
+      fontGran();
+      break;
+  }
 }
 
 function mostraGestioPacients(objecteRebut) {
