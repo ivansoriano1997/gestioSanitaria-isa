@@ -51,7 +51,6 @@ function contrastBlancNegre() {
 
     while(elementsAmbBgDark.length > 0 && element < elementsAmbBgDark.length) {
       elementsAmbBgDark[element].classList.add("bg-white");
-      elementsAmbBgDark[element].classList.add("text-dark");
       elementsAmbBgDark[element].classList.remove("bg-dark");
     }
 
@@ -118,9 +117,8 @@ function contrastNegreGroc() {
 
     document.getElementsByTagName("body")[0].classList.add("bg-dark");
 
-    if (document.getElementsByTagName("body")[0].classList.contains('text-success')) {
-      document.getElementsByTagName("body")[0].classList.remove("text-success");
-    }
+    if (document.getElementsByTagName("body")[0].classList.contains('text-dark')) document.getElementsByTagName("body")[0].classList.remove("text-dark");
+    if (document.getElementsByTagName("body")[0].classList.contains('text-success')) document.getElementsByTagName("body")[0].classList.remove("text-success");
 
     document.getElementsByTagName("body")[0].classList.add("text-warning");
 
@@ -129,7 +127,6 @@ function contrastNegreGroc() {
 
     while(elementsAmbBgWhite.length > 0 && element < elementsAmbBgWhite.length) {
       elementsAmbBgWhite[element].classList.add("bg-dark");
-      elementsAmbBgWhite[element].classList.add("text-white");
       elementsAmbBgWhite[element].classList.remove("bg-white");
     }
 
@@ -196,9 +193,8 @@ function contrastNegreVerd() {
 
     document.getElementsByTagName("body")[0].classList.add("bg-dark");
 
-    if (document.getElementsByTagName("body")[0].classList.contains('text-warning')) {
-      document.getElementsByTagName("body")[0].classList.remove("text-warning");
-    }
+    if (document.getElementsByTagName("body")[0].classList.contains('text-dark')) document.getElementsByTagName("body")[0].classList.remove("text-dark");
+    if (document.getElementsByTagName("body")[0].classList.contains('text-warning')) document.getElementsByTagName("body")[0].classList.remove("text-warning");
 
     document.getElementsByTagName("body")[0].classList.add("text-success");
 
@@ -207,7 +203,6 @@ function contrastNegreVerd() {
 
     while(elementsAmbBgWhite.length > 0 && element < elementsAmbBgWhite.length) {
       elementsAmbBgWhite[element].classList.add("bg-dark");
-      elementsAmbBgWhite[element].classList.add("text-white");
       elementsAmbBgWhite[element].classList.remove("bg-white");
     }
 
@@ -279,7 +274,6 @@ function contrastNegreVerd() {
 
      while(elementsAmbBgDark.length > 0 && element < elementsAmbBgDark.length) {
        elementsAmbBgDark[element].classList.add("bg-white");
-       elementsAmbBgDark[element].classList.add("text-dark");
        elementsAmbBgDark[element].classList.remove("bg-dark");
      }
 
