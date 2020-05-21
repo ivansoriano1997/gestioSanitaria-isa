@@ -60,8 +60,15 @@ taula_missatges[2][intMissatge] = "Cal que entris un nombre vàlid al camp {0}!"
 
 function comprovaCampBuit(objecteRebut) {
     let buit = false;
+    let valor = "";
 
-    if (objecteRebut.value == "") {
+    if (objecteRebut.tagName.toLowerCase() === "select") {
+      valor = objecteRebut.options[objecteRebut.selectedIndex].value;
+    } else {
+      valor = objecteRebut.value;
+    }
+
+    if (valor === "" || valor === 0) {
         mostraMissatge(1, objecteRebut.id);
         buit = true;
     }
@@ -308,14 +315,14 @@ function crearSelect(id, textsOptions) {
       select.classList.add("form-control");
 
       // Creem opció per defecte (--- Sense definir ---)
-      let optionPerDefecte = crearOptionSelect("option-1" + convertirAMajuscules(id.toString()), "--- Sense definir ---");
+      let optionPerDefecte = crearOptionSelect("-1", "--- Sense definir ---");
       optionPerDefecte.setAttribute("selected", true);
       optionPerDefecte.setAttribute("disabled", true);
       select.appendChild(optionPerDefecte);
 
       if (typeof Array.isArray(textsOptions)) {
           for (let numeroTextOption = 0; numeroTextOption < textsOptions.length; numeroTextOption++) {
-              let option = crearOptionSelect("option" + numeroTextOption.toString() + convertirAMajuscules(id.toString()), textsOptions[numeroTextOption].toString());
+              let option = crearOptionSelect(numeroTextOption.toString(), textsOptions[numeroTextOption].toString());
               if (option !== null) {
                 select.appendChild(option);
               }
@@ -381,7 +388,7 @@ function crearContingutDivPacient(numeroPacient) {
   let divColMalaltiaPacient = crearContenidor("colMalaltiaPacient" + numeroPacient.toString(), ["col"]);
 
   // Afegim la label de la malaltia del pacient
-  divColMalaltiaPacient.appendChild(crearLabel("inputMalaltiaPacient" + numeroPacient.toString(), "Malaltia del pacient: "));
+  divColMalaltiaPacient.appendChild(crearLabel("selectMalaltiaPacient" + numeroPacient.toString(), "Malaltia del pacient: "));
 
   // Afegim el select de malalties
   divColMalaltiaPacient.appendChild(crearSelect("selectMalaltiaPacient" + numeroPacient.toString(), llistaMalalties));
@@ -452,14 +459,14 @@ function ingressarPacients() {
       if (!comprovaCampBuit(document.getElementById("inputNomPacient" + numeroPacient.toString())) &&
           !comprovaCampBuit(document.getElementById("inputCognomPacient" + numeroPacient.toString())) &&
           !comprovaCampBuit(document.getElementById("inputNifPacient" + numeroPacient.toString())) &&
-          !comprovaCampBuit(document.getElementById("inputMalaltiaPacient" + numeroPacient.toString()))) {
+          !comprovaCampBuit(document.getElementById("selectMalaltiaPacient" + numeroPacient.toString()))) {
 
           // Afegim l'objecte pacients a l'array de "pacientsIngressats" amb les dades introduïdes formulari
           hospital.pacientsIngressats.push(new Pacient (
             document.getElementById("inputNomPacient" + numeroPacient.toString()).value,
             document.getElementById("inputCognomPacient" + numeroPacient.toString()).value,
             document.getElementById("inputNifPacient" + numeroPacient.toString()).value,
-            document.getElementById("inputMalaltiaPacient" + numeroPacient.toString()).value
+            document.getElementById("selectMalaltiaPacient" + numeroPacient.toString()).value
           ));
 
           console.log("Pacients ingressat: " + JSON.stringify(hospital.pacientsIngressats));
@@ -482,9 +489,4 @@ String.format = function() {
   }
 
   return s;
-}
-
-const convertirAMajuscules = (s) => {
-  if (typeof s !== 'string') return ''
-  return s.charAt(0).toUpperCase() + s.slice(1)
 }
