@@ -8,6 +8,8 @@ const eleID_text_missatge = document.getElementById("h3BarraMissatges");
 const eleID_divPresentacio = document.getElementById("divPresentacio");
 const eleID_divHospital = document.getElementById("divHospital");
 const eleID_divPacient = document.getElementById("divPacient");
+const eleID_divPacientsTractactament = document.getElementById("divTractament");
+
 
 const eleID_divControls = document.getElementById("divControls");
 
@@ -221,19 +223,15 @@ function ocultaGestioHospital(objecteRebut) {
 function crearContenidor(id, classes) {
     let contenidor = null;
 
-    if (Array.isArray(classes)) {
-        if (typeof id !== "undefined") {
-            contenidor = document.createElement("div");
-            contenidor.setAttribute("id", id.toString());
+    if (typeof id !== "undefined") {
+        contenidor = document.createElement("div");
+        contenidor.setAttribute("id", id.toString());
 
-            if (classes.length > 0) {
-                classes.forEach((classe) => {
-                    contenidor.classList.add(classe.toString());
-                });
-            }
+        if (classes !== "") {
+            contenidor.setAttribute("class", classes);
         }
     } else {
-      console.log("ERROR => crearContenidor(classes): el paràmetre <<classe>> ha de ser un array de cadenes!");
+      console.log("ERROR => crearContenidor(id): el paràmetre <<id>> ha d'estar definit!");
     }
 
     return contenidor;
@@ -281,16 +279,43 @@ function crearInput(id, attributsExtra) {
     return input;
 }
 
+// CREAR UN BOTÓ DE FORMA DINÀMICA ESPECIFICANT UN ID
+function crearButton(id, text, attributsExtra) {
+    let button = null;
+
+    if (typeof id !== "undefined" && text !== "") {
+      button = document.createElement("button");
+      button.setAttribute("id", id.toString());
+      button.setAttribute("type", "button");
+      button.innerText = text;
+
+      if (Array.isArray(attributsExtra)) {
+          if (attributsExtra.length > 0) {
+              attributsExtra.forEach((attributsExtra) => {
+                if (typeof attributsExtra === "object" && attributsExtra !== null) {
+                  button.setAttribute(attributsExtra.nom.toString(), attributsExtra.valor.toString());
+                }
+              });
+          }
+      }
+
+      button.classList.add("btn");
+      button.classList.add("btn-primary");
+    } else {
+      console.log("ERROR => crearButton(id, text): els paràmetres <<id, text>> no poden estar sense definir!");
+    }
+
+    return button;
+}
+
 // CREA EL CONTINGUT DEl FORMULARI DE PACIENT
 function crearContingutDivPacient(numeroPacient) {
-  let formulariPacient = null;
-
   // Creem el div que contindrà tots els sub-contenidors de nom, cognom, nif, malaltia
-  let divPacient = crearContenidor("divPacient" + numeroPacient.toString(), ["form-row", "mb-3"]);
+  let divPacient = crearContenidor("divPacient" + numeroPacient.toString(), "form-row mb-3");
 
   /* NOM */
   // Creem un div "col" per al label i input del nom del pacient
-  let divColNomPacient = crearContenidor("colNomPacient" + numeroPacient.toString(), ["col"]);
+  let divColNomPacient = crearContenidor("colNomPacient" + numeroPacient.toString(), "col");
 
   // Afegim la label del nom del pacient
   divColNomPacient.appendChild(crearLabel("inputNomPacient" + numeroPacient.toString(), "Nom del pacient: "));
@@ -298,12 +323,12 @@ function crearContingutDivPacient(numeroPacient) {
   // Afegim l'input del nom del pacient
   divColNomPacient.appendChild(crearInput("inputNomPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 100}]));
 
-  // Afegim el contenidor "col" al contenidor "pacient"
+  // Afegim el contenidor "col" al contenidor "divPacient"
   divPacient.appendChild(divColNomPacient);
 
   /* COGNOM */
   // Creem un div "col" per al label i input del cognom del pacient
-  let divCognomPacient = crearContenidor("colCognomPacient" + numeroPacient.toString(), ["col"]);
+  let divCognomPacient = crearContenidor("colCognomPacient" + numeroPacient.toString(), "col");
 
   // Afegim la label del nom del pacient
   divCognomPacient.appendChild(crearLabel("inputCognomPacient" + numeroPacient.toString(), "Cognom del pacient: "));
@@ -311,12 +336,12 @@ function crearContingutDivPacient(numeroPacient) {
   // Afegim l'input del nom del pacient
   divCognomPacient.appendChild(crearInput("inputCognomPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 100}]));
 
-  // Afegim el contenidor "col" al contenidor "pacient"
+  // Afegim el contenidor "col" al contenidor "divPacient"
   divPacient.appendChild(divCognomPacient);
 
   /* NIF */
   // Creem un div "col" per al label i input del NIF del pacient
-  let divNifPacient = crearContenidor("colNifPacient" + numeroPacient.toString(), ["col"]);
+  let divNifPacient = crearContenidor("colNifPacient" + numeroPacient.toString(), "col");
 
   // Afegim la label del nom del pacient
   divNifPacient.appendChild(crearLabel("inputNifPacient" + numeroPacient.toString(), "NIF del pacient: "));
@@ -324,12 +349,12 @@ function crearContingutDivPacient(numeroPacient) {
   // Afegim l'input del nom del pacient
   divNifPacient.appendChild(crearInput("inputNifPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "maxlength", valor: 9}]));
 
-  // Afegim el contenidor "col" al contenidor "pacient"
+  // Afegim el contenidor "col" al contenidor "divPacient"
   divPacient.appendChild(divNifPacient);
 
   /* MALALTIA */
   // Creem un div "col" per al label i input de la malaltia del pacient
-  let divColMalaltiaPacient = crearContenidor("colMalaltiaPacient" + numeroPacient.toString(), ["col"]);
+  let divColMalaltiaPacient = crearContenidor("colMalaltiaPacient" + numeroPacient.toString(), "col");
 
   // Afegim la label de la malaltia del pacient
   divColMalaltiaPacient.appendChild(crearLabel("inputMalaltiaPacient" + numeroPacient.toString(), "Malaltia del pacient: "));
@@ -337,7 +362,7 @@ function crearContingutDivPacient(numeroPacient) {
   // Afegim l'input de la malaltia
   divColMalaltiaPacient.appendChild(crearInput("inputMalaltiaPacient" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "max-length", valor: 100}]));
 
-  // Afegim el contenidor "col" al contenidor "pacient"
+  // Afegim el contenidor "col" al contenidor "divPacient"
   divPacient.appendChild(divColMalaltiaPacient);
 
   // Afegim el contenidor del pacient al formulari
@@ -356,6 +381,7 @@ function mostraGestioPacients(objecteRebut) {
     if (!conteClass(eleID_divPacient, "d-none")) {
         afegirClass(eleID_divPacient, "d-none");
     }
+
     eleID_divPresentacio.classList.toggle("d-none");
     eleID_divPacient.classList.toggle("d-none");
     amagaBotons();
@@ -367,9 +393,71 @@ function ocultaGestioPacients(objecteRebut) {
     mostraBotons();
 }
 
-function ocultaControls(objecteRebut) {
+// CREA EL CONTINGUT DEl FORMULARI DE PACIENTS EN TRACTAMENT
+function crearContingutDivPacientEnTractament(numeroPacient) {
+  // Creem el div que contindrà tots els sub-contenidors de nom, cognom, nif, malaltia
+  let divPacientEnTractament = crearContenidor("divPacientEnTractament" + numeroPacient.toString(), "form-row mb-3");
+
+  /* NOM */
+  // Creem un div "col" per al label i input del nom del pacient
+  let divColNomPacientEnTractament = crearContenidor("colNomPacientEnTractament" + numeroPacient.toString(), "col");
+
+  // Afegim la label del nom del pacient
+  divColNomPacientEnTractament.appendChild(crearLabel("inputColNomPacientTractament" + numeroPacient.toString(), "Nom del pacient: "));
+
+  // Afegim l'input del nom del pacient
+  divColNomPacientEnTractament.appendChild(crearInput("inputColNomPacientTractament" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "readonly", valor: "true"}, {nom: "value", valor: hospital.pacientsIngressats[numeroPacient].nom}]));
+
+  // Afegim el contenidor "col" al contenidor "divPacientEnTractament"
+  divPacientEnTractament.appendChild(divColNomPacientEnTractament);
+
+  /* MALALTIA */
+  // Creem un div "col" per al label i input de la malaltia del pacient
+  let divColMalaltiaPacientEnTractament = crearContenidor("colMalaltiaPacientTractament" + numeroPacient.toString(), "col");
+
+  // Afegim la label de la malaltia del pacient
+  divColMalaltiaPacientEnTractament.appendChild(crearLabel("inputMalaltiaPacientTractament" + numeroPacient.toString(), "Malaltia del pacient: "));
+
+  // Afegim l'input de la malaltia
+  divColMalaltiaPacientEnTractament.appendChild(crearInput("inputMalaltiaPacientEnTractament" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "readonly", valor: "true"}, {nom: "value", valor: hospital.pacientsIngressats[numeroPacient].malaltia}]));
+
+  // Afegim el contenidor "col" al contenidor "divPacientEnTractament"
+  divPacientEnTractament.appendChild(divColMalaltiaPacientEnTractament, "col flex flex-column");
+
+  let divColBotonsPacientEnTractament = crearContenidor("colBotonsPacientEnTractament" + numeroPacient.toString())
+
+  /* DONAR D'ALTA */
+  // Afegim el botó al contenidor "divPacientEnTractament"
+  divColBotonsPacientEnTractament.appendChild(crearButton("botoAltaPacientEnTractament" + numeroPacient.toString(), "Donar d'alta", [{nom: "class", valor: "btn-success h-50 mb-1 ml-2 mr-1 w-100"}, {nom: "onclick", valor: "pacientsEnTractamentDonarDalta(" + numeroPacient + ")"}]));
+
+  /* MORIR */
+  // Afegim el botó al contenidor "divPacientEnTractament"danger
+  divColBotonsPacientEnTractament.appendChild(crearButton("botoMorirPacientEnTractament" + numeroPacient.toString(), "Morir", [{nom: "class", valor: "btn-danger h-50 ml-2 mr-1 w-100"}, {nom: "onclick", valor: "pacientsEnTractamentMorir(" + numeroPacient + ")"}]));
+
+  // Afegim el contenidor "col" al contenidor "divPacientEnTractament"
+  divPacientEnTractament.appendChild(divColBotonsPacientEnTractament);
+
+  // Afegim el contenidor del pacient al formulari
+  document.getElementById("dadesPacientTractament").appendChild(divPacientEnTractament);
+}
+
+function mostraGestioPacientsEnTractament(objecteRebut) {
+    for (let pacient = 0; pacient < hospital.maximPacients; pacient++) {
+      crearContingutDivPacientEnTractament(pacient);
+    }
+
+    if (!conteClass(eleID_divPacient, "d-none")) {
+        afegirClass(eleID_divPacient, "d-none");
+    }
+
     eleID_divPresentacio.classList.toggle("d-none");
-    eleID_divControls.classList.toggle("d-none");
+    eleID_divPacientsTractactament.classList.toggle("d-none");
+    amagaBotons();
+}
+
+function ocultaGestioPacientsTractament(objecteRebut) {
+    eleID_divPresentacio.classList.toggle("d-none");
+    eleID_divPacientsTractactament.classList.toggle("d-none");
     mostraBotons();
 }
 
@@ -413,7 +501,6 @@ function ingressarPacients() {
             document.getElementById("inputMalaltiaPacient" + numeroPacient.toString()).value
           ));
 
-          console.log("Pacients ingressat: " + JSON.stringify(hospital.pacientsIngressats));
           numeroPacient++;
       } else {
         campsBuits = true;
@@ -422,7 +509,42 @@ function ingressarPacients() {
 
   if (!campsBuits) {
       ocultaGestioPacients();
+      mostraGestioPacientsEnTractament();
   }
+}
+
+function pacientsEnTractamentDonarDalta(llitPacient) {
+  hospital.donarDaltaPacient(llitPacient);
+  document.getElementById("divPacientEnTractament" + llitPacient.toString()).remove();
+
+  if (totsLlitsBuits())
+  dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nom + ' no té cap pacient ingressat en aquests moments.</p>' +
+  '<div class="text-center">' +
+    '<button type="button" class="btn btn-primary mt-4" onClick="window.location.reload()">Tornar a començar</button>' +
+  '</div>');
+}
+
+function pacientsEnTractamentMorir(llitPacient) {
+  hospital.morirPacient(llitPacient);
+  document.getElementById("divPacientEnTractament" + llitPacient.toString()).remove();
+
+  if (totsLlitsBuits())
+    dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nom + ' no té cap pacient ingressat en aquests moments.</p>' +
+    '<div class="text-center">' +
+      '<button type="button" class="btn btn-primary mt-4" onClick="window.location.reload()">Tornar a començar</button>' +
+    '</div>');
+}
+
+function totsLlitsBuits() {
+  var llitsBuits = true;
+  var llit = 0;
+
+  while(llitsBuits && llit < hospital.pacientsIngressats.length) {
+    llitsBuits = Object.keys(hospital.pacientsIngressats[llit]).length === 0;
+    llit++;
+  }
+
+  return llitsBuits;
 }
 
 String.format = function() {
