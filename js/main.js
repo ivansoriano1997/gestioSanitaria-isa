@@ -333,6 +333,7 @@ function crearSelect(id, textsOptions) {
     }
 
   return select;
+}
 
 // CREAR UN BOTÓ DE FORMA DINÀMICA ESPECIFICANT UN ID
 function crearButton(id, text, attributsExtra) {
