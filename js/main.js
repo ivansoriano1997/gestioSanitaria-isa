@@ -475,7 +475,7 @@ function crearContingutDivPacientEnTractament(numeroPacient) {
   divColMalaltiaPacientEnTractament.appendChild(crearLabel("inputMalaltiaPacientTractament" + numeroPacient.toString(), "Malaltia del pacient: "));
 
   // Afegim l'input de la malaltia
-  divColMalaltiaPacientEnTractament.appendChild(crearInput("inputMalaltiaPacientEnTractament" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "readonly", valor: "true"}, {nom: "value", valor: hospital.pacientsIngressats[numeroPacient].malaltia}]));
+  divColMalaltiaPacientEnTractament.appendChild(crearInput("inputMalaltiaPacientEnTractament" + numeroPacient.toString(), [{nom: "type", valor: "text"}, {nom: "readonly", valor: "true"}, {nom: "value", valor: llistaMalalties[hospital.pacientsIngressats[numeroPacient].malaltia]}]));
 
   // Afegim el contenidor "col" al contenidor "divPacientEnTractament"
   divPacientEnTractament.appendChild(divColMalaltiaPacientEnTractament, "col flex flex-column");
