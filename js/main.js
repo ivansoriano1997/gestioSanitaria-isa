@@ -518,7 +518,7 @@ function pacientsEnTractamentDonarDalta(llitPacient) {
   document.getElementById("divPacientEnTractament" + llitPacient.toString()).remove();
 
   if (totsLlitsBuits())
-  dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nom + ' no té cap pacient ingressat en aquests moments.</p>' +
+  dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nomHospital + ' no té cap pacient ingressat en aquests moments.</p>' +
   '<div class="text-center">' +
     '<button type="button" class="btn btn-primary mt-4" onClick="window.location.reload()">Tornar a començar</button>' +
   '</div>');
@@ -529,7 +529,7 @@ function pacientsEnTractamentMorir(llitPacient) {
   document.getElementById("divPacientEnTractament" + llitPacient.toString()).remove();
 
   if (totsLlitsBuits())
-    dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nom + ' no té cap pacient ingressat en aquests moments.</p>' +
+    dadesPacientTractament.innerHTML = ('<p class="text-center">L\'Hospital ' + hospital.nomHospital + ' no té cap pacient ingressat en aquests moments.</p>' +
     '<div class="text-center">' +
       '<button type="button" class="btn btn-primary mt-4" onClick="window.location.reload()">Tornar a començar</button>' +
     '</div>');
