@@ -455,7 +455,13 @@ function crearContingutDivPacient(numeroPacient) {
   }
 }
 
-function mostraGestioPacients(objecteRebut) {
+function mostraGestioPacients() {
+    document.getElementById('tancaDivPacient').onclick = function tanca() {
+        eleID_divPresentacio.classList.toggle("d-none");
+        eleID_divPacient.classList.toggle("d-none");
+        mostraBotons();
+    }
+
     if (typeof document.getElementById("divPacient0") !== "undefined" && document.getElementById("divPacient0") !== null) {
         document.getElementById("dadesPacient").innerHTML = "";
     }
@@ -473,7 +479,7 @@ function mostraGestioPacients(objecteRebut) {
     amagaBotons();
 }
 
-function ocultaGestioPacients(objecteRebut) {
+function ocultaGestioPacients() {
     eleID_divPresentacio.classList.toggle("d-none");
     eleID_divPacient.classList.toggle("d-none");
     mostraBotons();
@@ -527,7 +533,13 @@ function crearContingutDivPacientEnTractament(numeroPacient) {
   document.getElementById("dadesPacientTractament").appendChild(divPacientEnTractament);
 }
 
-function mostraGestioPacientsEnTractament(objecteRebut) {
+function mostraGestioPacientsEnTractament() {
+    document.getElementById('tancaDivTractament').onclick = function tanca() {
+        eleID_divPresentacio.classList.toggle("d-none");
+        eleID_divPacientsTractactament.classList.toggle("d-none");
+        mostraBotons();
+    }
+
     for (let pacient = 0; pacient < hospital.maximPacients; pacient++) {
       crearContingutDivPacientEnTractament(pacient);
     }
@@ -541,9 +553,15 @@ function mostraGestioPacientsEnTractament(objecteRebut) {
     amagaBotons();
 }
 
-function ocultaGestioPacientsTractament(objecteRebut) {
+function ocultaGestioPacientsTractament() {
     eleID_divPresentacio.classList.toggle("d-none");
     eleID_divPacientsTractactament.classList.toggle("d-none");
+    mostraBotons();
+}
+
+function ocultaControls() {
+    eleID_divPresentacio.classList.toggle("d-none");
+    eleID_divControls.classList.toggle("d-none");
     mostraBotons();
 }
 
